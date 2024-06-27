@@ -13,20 +13,22 @@ interface AppProps {
   props: any
 }
 
-export default function App(props: AppProps) {
+const App: React.FC = () => {
   return (
     <Router>
       <PageContainer>
         <SideNavBar />
         <ContentWrapper>
           <Switch>
-            <Route path="/discover" component={Discover} {...props}/>
+            <Route path="/" component={Discover} />
           </Switch>
         </ContentWrapper>
       </PageContainer>
     </Router>
   );
 }
+
+export default App;
 
 
 const ContentWrapper = styled.main`
@@ -36,3 +38,4 @@ const ContentWrapper = styled.main`
 const PageContainer = styled.main`
   overflow-x: hidden;
 `
+

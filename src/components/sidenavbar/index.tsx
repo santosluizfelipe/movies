@@ -7,7 +7,8 @@ import Arrow from "../../images/arrow-icon.png";
 import SearchWhite from "../../images/search-icon-white.png";
 
 export default function SideNavBar() {
-  const [activeSideBar] = useState()
+  // const [activeSideBar, setActiveSideBar] = useState<boolean>(false)
+  const [activeSideBar, setActiveSideBar] = useState()
 
   /* Write the necessary functions to show/hide the side bar on mobile devices */
 
@@ -17,11 +18,11 @@ export default function SideNavBar() {
       <SideNavMainLink className="menu_nav_link main_nav_link" to="/" activeClassName="active" exact>
         Wesley
       {/* Add types for the props of 'NavIcon' */}
-      <NavIcon arrow></NavIcon>
+      <NavIcon ></NavIcon>
       </SideNavMainLink>
       <SideNavMainLink className="menu_nav_link" to="/discover" activeClassName="active">
         Discover
-        <NavIcon search></NavIcon>
+        <NavIcon ></NavIcon>
       </SideNavMainLink>
       <SideNavHeader><HeaderText>Watched</HeaderText></SideNavHeader>
       <NavLink className="menu_nav_link" to="/watched/movies" activeClassName="active">Movies</NavLink>
