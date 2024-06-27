@@ -133,12 +133,22 @@ export default function Discover() {
       setIsSearching(true);
       setSearchPage(1);
       searchMovies(keyword, year, 1);
+    } else {
+      setIsSearching(false);
+      setState((prevState) => ({
+        ...prevState,
+        results: [],
+      }));
     }
   }, [keyword, year]);
+  
 
   const getGenreNames = (genre_ids: number[]) => {
     return genre_ids.map((id) => genres.find((genre) => genre.id === id)?.name).join(", ");
   };
+
+  console.log("isSearching:", isSearching)
+  console.log("isLoading:", isLoading)
 
   return (
     <DiscoverWrapper>
