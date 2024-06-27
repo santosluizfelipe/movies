@@ -27,7 +27,7 @@ export const Input = styled.input`
   outline: none;
   flex: 1;
   font-size: 14px;
-  color: #fff;
+  color: ${lightGreen};
 `;
 
 export const SearchButton = styled.button`

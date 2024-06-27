@@ -1,21 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
 import SearchIcon from "../../images/search-icon-yellow.png";
 import CalendarIcon from "../../images/year-icon.png";
-import { SearchBarWrapper, SearchInputWrapper, Icon, Input, SearchButton } from "./SearchBar.style";
+import { SearchBarWrapper, SearchInputWrapper, Icon, Input } from './SearchBar.style';
 
-interface SearchBarProps {
-  onSearch: (keyword: string, year: string) => void;
-}
+import { useSearch } from '../utils/SearchContext';
+import useDebounce from '../utils/useDebounce';
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [keyword, setKeyword] = useState("");
-  const [year, setYear] = useState("");
+const SearchBar: React.FC = () => {
+  const { keyword, year, setKeyword, setYear } = useSearch();
+  const debouncedKeyword = useDebounce(keyword, 2000); 
+  const debouncedYear = useDebounce(year, 2000);
 
-  const handleSearch = () => {
-    onSearch(keyword, year);
-  };
+
+  useEffect(() => {
+    setKeyword(debouncedKeyword);
+    setYear(debouncedYear);
+  }, [debouncedKeyword, debouncedYear]);
 
   return (
     <SearchBarWrapper>
@@ -37,10 +38,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
           onChange={(e) => setYear(e.target.value)}
         />
       </SearchInputWrapper>
-      <SearchButton onClick={handleSearch}>Search</SearchButton>
     </SearchBarWrapper>
   );
 }
-
 
 export default SearchBar;

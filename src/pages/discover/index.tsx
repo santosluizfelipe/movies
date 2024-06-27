@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import axios, { AxiosRequestConfig } from "axios";
-import * as colors from "../../colors";
-import * as fetcher from "../../fetcher";
 import SearchFilters from "../../components/searchfilter";
-import MovieList from "../../components/movielist";
-
-import { DiscoverWrapper, TotalCounter, MovieResults, MovieFilters, MobilePageTitle, MovieCard, MovieInfo } from "./Discover.style";
-
-// const apiKey = process.env.REACT_APP_API_KEY;
-// const accessToken = process.env.REACT_APP_ACCESS_TOKEN;
+import { DiscoverWrapper, MovieResults, MovieFilters, MobilePageTitle, MovieCard, MovieInfo } from "./Discover.style";
+import { useSearch } from "../../components/utils/SearchContext";
 
 interface Movie {
   id: number;
@@ -21,25 +14,17 @@ interface Movie {
 }
 
 interface State {
-  keyword: string;
-  year: number;
   results: Movie[];
-  movieDetails: Movie | null;
   totalCount: number;
   genreOptions: { id: number; name: string }[];
   ratingOptions: { id: number; name: number }[];
   languageOptions: { id: string; name: string }[];
 }
 
-
-
 export default function Discover() {
-  // You don't need to keep the current structure of this state object. Feel free to restructure it as needed.
+  const { keyword, year } = useSearch();
   const [state, setState] = useState<State>({
-    keyword: "",
-    year: 0,
     results: [],
-    movieDetails: null,
     totalCount: 0,
     genreOptions: [],
     ratingOptions: [
@@ -58,14 +43,12 @@ export default function Discover() {
     ],
   });
 
-
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
   const [popularPage, setPopularPage] = useState(1);
   const [searchPage, setSearchPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-
 
   const options: AxiosRequestConfig = {
     headers: {
@@ -74,7 +57,6 @@ export default function Discover() {
     },
   };
 
-  // Write a function to preload the popular movies when page loads & get the movie genres
   const preloadPopularMovies = async (page: number) => {
     setIsLoading(true);
     try {
@@ -128,9 +110,9 @@ export default function Discover() {
 
   useEffect(() => {
     if (isSearching) {
-      searchMovies(state.keyword, state.year.toString(), searchPage);
+      searchMovies(keyword, year, searchPage);
     }
-  }, [searchPage, isSearching]);
+  }, [searchPage, isSearching, keyword, year]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -146,38 +128,16 @@ export default function Discover() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isLoading, isSearching]);
 
-
-
-  console.log(popularMovies)
-
-  // Write a function to get the movie details based on the movie id taken from the URL.
-  // const searchMovies = async (
-  //   keyword: string,
-  //   year: number,
-  // ) => {};
-
- 
-
-  const {
-    genreOptions,
-    languageOptions,
-    ratingOptions,
-    totalCount,
-    results,
-    movieDetails,
-  } = state;
-
-  console.log("popular movies=>", popularMovies)
-  console.log("results=>", results)
+  useEffect(() => {
+    if (keyword || year) {
+      setIsSearching(true);
+      setSearchPage(1);
+      searchMovies(keyword, year, 1);
+    }
+  }, [keyword, year]);
 
   const getGenreNames = (genre_ids: number[]) => {
     return genre_ids.map((id) => genres.find((genre) => genre.id === id)?.name).join(", ");
-  };
-
-  const handleSearch = (keyword: string, year: string) => {
-    setState((prevState) => ({ ...prevState, keyword, year: parseInt(year), results: [] }));
-    setSearchPage(1);
-    setIsSearching(true);
   };
 
   return (
@@ -185,14 +145,14 @@ export default function Discover() {
       <MobilePageTitle>Discover</MobilePageTitle>
       <MovieFilters>
         <SearchFilters 
-          genres={genreOptions} 
-          ratings={ratingOptions}  
-          languages={languageOptions}
-          searchMovies={(keyword, year) => handleSearch(keyword, year)}
+          genres={state.genreOptions} 
+          ratings={state.ratingOptions}  
+          languages={state.languageOptions}
+          searchMovies={(keyword, year) => searchMovies(keyword, year as string, 1)}
         />
       </MovieFilters>
       <MovieResults>
-        {results.length === 0 && !isSearching ? (
+        {state.results.length === 0 && !isSearching ? (
           popularMovies.map((movie) => (
             <MovieCard key={movie.id}>
               <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
@@ -205,7 +165,7 @@ export default function Discover() {
             </MovieCard>
           ))
         ) : (
-          results.map((movie) => (
+          state.results.map((movie) => (
             <MovieCard key={movie.id}>
               <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
               <MovieInfo>
