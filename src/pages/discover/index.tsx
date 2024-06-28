@@ -37,6 +37,7 @@ interface State {
 
 export default function Discover() {
   const { keyword, year } = useSearch();
+  // const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
   const [state, setState] = useState<State>({
     results: [],
     totalCount: 0,
@@ -58,18 +59,20 @@ export default function Discover() {
   });
 
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  
   const [popularPage, setPopularPage] = useState(1);
   const [searchPage, setSearchPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedGenres, setSelectedGenres] = useState<number[]>([]);
 
   const options: AxiosRequestConfig = {
     headers: {
       accept: "application/json",
-      Authorization: `Bearer YOUR_API_KEY_HERE`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZjQwMWQ5ODE4MmQwNWE4MzMwOWQxYTljNDFlNmI1OCIsIm5iZiI6MTcxOTQwOTkwNC4wNTc4MjcsInN1YiI6IjY2N2FlNWY4ZTQ1NDcyMzBlMWEwYjI5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._yuMI9W5WzJrBvA57G1vTIctvNmAQPSVNFD3o7wpMz8`,
     },
   };
+
+
 
   const preloadPopularMovies = async (page: number) => {
     setIsLoading(true);
@@ -89,12 +92,11 @@ export default function Discover() {
     }
   };
 
-  const searchMovies = async (keyword: string, year: string, genres: number[], page: number = 1) => {
+  const searchMovies = async (keyword: string, year: string, page: number) => {
     setIsLoading(true);
     try {
-      const genreString = genres.join(",");
       const response = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?query=${keyword}&year=${year}&with_genres=${genreString}&language=en-US&page=${page}`,
+        `https://api.themoviedb.org/3/search/movie?query=${keyword}&year=${year}&language=en-US&page=${page}`,
         options
       );
       setState((prevState) => ({
@@ -118,14 +120,16 @@ export default function Discover() {
         "https://api.themoviedb.org/3/genre/movie/list?language=en-US",
         options
       );
+
       setState((prevState) => ({
         ...prevState,
         genreOptions: response.data.genres,
+        
       }));
     } catch (error) {
       console.error("Error fetching genres:", error);
     }
-  };
+  }; 
 
   useEffect(() => {
     preloadPopularMovies(popularPage);
@@ -134,9 +138,9 @@ export default function Discover() {
 
   useEffect(() => {
     if (isSearching) {
-      searchMovies(keyword, year, selectedGenres, searchPage);
+      searchMovies(keyword, year, searchPage);
     }
-  }, [searchPage, isSearching, keyword, year, selectedGenres]);
+  }, [searchPage, isSearching, keyword, year]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -157,36 +161,36 @@ export default function Discover() {
   }, [isLoading, isSearching]);
 
   useEffect(() => {
-    if (keyword || year || selectedGenres.length > 0) {
+    if (keyword || year) {
       setIsSearching(true);
       setSearchPage(1);
-      searchMovies(keyword, year, selectedGenres, 1);
+      searchMovies(keyword, year, 1);
     } else {
       setIsSearching(false);
       setState((prevState) => ({
         ...prevState,
         results: [],
-        totalCount: 0,
       }));
     }
-  }, [keyword, year, selectedGenres]);
+  }, [keyword, year]);
 
   const getGenreNames = (genre_ids: number[]) => {
     return genre_ids
       .map((id) => state.genreOptions.find((genre) => genre.id === id)?.name)
       .join(", ");
   };
+  console.log("genres:", state.genreOptions)
 
   return (
     <DiscoverWrapper>
       <MobilePageTitle>Discover</MobilePageTitle>
       <SearchSection>
         <MovieFilters>
-          <SearchFilters
-            genres={state.genreOptions}
-            ratings={state.ratingOptions}
+          <SearchFilters 
+            genres={state.genreOptions} 
+            ratings={state.ratingOptions}  
             languages={state.languageOptions}
-            searchMovies={(keyword, year) => searchMovies(keyword, year as string, selectedGenres)}
+            searchMovies={(keyword, year) => searchMovies(keyword, year as string, 1)}
           />
         </MovieFilters>
         <MovieResults>
@@ -227,4 +231,5 @@ export default function Discover() {
       </SearchSection>
     </DiscoverWrapper>
   );
+  
 }
