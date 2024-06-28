@@ -1,7 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosRequestConfig } from "axios";
 import SearchFilters from "../../components/searchfilter";
-import { DiscoverWrapper, MovieResults, MovieFilters, MobilePageTitle, MovieCard, MovieInfo } from "./Discover.style";
+import {
+  DiscoverWrapper,
+  MovieResults,
+  MovieFilters,
+  MobilePageTitle,
+  MovieCard,
+  MovieInfo,
+  SearchSection,
+  GenreLabel,
+  Header,
+  ReleaseDateLabel,
+  MovieOverview,
+  InfoContent,
+  ReleaseDateContainer,
+} from "./Discover.style";
 import { useSearch } from "../../components/utils/SearchContext";
 
 interface Movie {
@@ -64,7 +78,10 @@ export default function Discover() {
         `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${page}`,
         options
       );
-      setPopularMovies((prevMovies) => [...prevMovies, ...response.data.results.slice(0, 3)]);
+      setPopularMovies((prevMovies) => [
+        ...prevMovies,
+        ...response.data.results.slice(0, 3),
+      ]);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -81,7 +98,10 @@ export default function Discover() {
       );
       setState((prevState) => ({
         ...prevState,
-        results: page === 1 ? response.data.results.slice(0, 3) : [...prevState.results, ...response.data.results.slice(0, 3)],
+        results:
+          page === 1
+            ? response.data.results.slice(0, 3)
+            : [...prevState.results, ...response.data.results.slice(0, 3)],
         totalCount: response.data.total_results,
       }));
       setIsLoading(false);
@@ -116,7 +136,11 @@ export default function Discover() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100 && !isLoading) {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight - 100 &&
+        !isLoading
+      ) {
         if (isSearching) {
           setSearchPage((prevPage) => prevPage + 1);
         } else {
@@ -141,53 +165,62 @@ export default function Discover() {
       }));
     }
   }, [keyword, year]);
-  
 
   const getGenreNames = (genre_ids: number[]) => {
-    return genre_ids.map((id) => genres.find((genre) => genre.id === id)?.name).join(", ");
+    return genre_ids
+      .map((id) => genres.find((genre) => genre.id === id)?.name)
+      .join(", ");
   };
-
-  console.log("isSearching:", isSearching)
-  console.log("isLoading:", isLoading)
 
   return (
     <DiscoverWrapper>
       <MobilePageTitle>Discover</MobilePageTitle>
-      <MovieFilters>
-        <SearchFilters 
-          genres={state.genreOptions} 
-          ratings={state.ratingOptions}  
-          languages={state.languageOptions}
-          searchMovies={(keyword, year) => searchMovies(keyword, year as string, 1)}
-        />
-      </MovieFilters>
-      <MovieResults>
-        {state.results.length === 0 && !isSearching ? (
-          popularMovies.map((movie) => (
-            <MovieCard key={movie.id}>
-              <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-              <MovieInfo>
-                <h3>{movie.title}</h3>
-                <p>{movie.release_date}</p>
-                <p>{getGenreNames(movie.genre_ids)}</p>
-                <p>{movie.overview}</p>
-              </MovieInfo>
-            </MovieCard>
-          ))
-        ) : (
-          state.results.map((movie) => (
-            <MovieCard key={movie.id}>
-              <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-              <MovieInfo>
-                <h3>{movie.title}</h3>
-                <p>{movie.release_date}</p>
-                <p>{getGenreNames(movie.genre_ids)}</p>
-                <p>{movie.overview}</p>
-              </MovieInfo>
-            </MovieCard>
-          ))
-        )}
-      </MovieResults>
+      <SearchSection>
+        <MovieFilters>
+          <SearchFilters 
+            genres={state.genreOptions} 
+            ratings={state.ratingOptions}  
+            languages={state.languageOptions}
+            searchMovies={(keyword, year) => searchMovies(keyword, year as string, 1)}
+          />
+        </MovieFilters>
+        <MovieResults>
+          {state.results.length === 0 && !isSearching ? (
+            popularMovies.map((movie) => (
+              <MovieCard key={movie.id}>
+                <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
+                <MovieInfo>
+                  <InfoContent>
+                    <Header>{movie.title}</Header>
+                    <GenreLabel>{getGenreNames(movie.genre_ids)}</GenreLabel>
+                    <MovieOverview>{movie.overview}</MovieOverview>
+                  </InfoContent>
+                  <ReleaseDateContainer>
+                    <ReleaseDateLabel>{movie.release_date}</ReleaseDateLabel>
+                  </ReleaseDateContainer>
+                </MovieInfo>
+              </MovieCard>
+            ))
+          ) : (
+            state.results.map((movie) => (
+              <MovieCard key={movie.id}>
+                <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
+                <MovieInfo>
+                  <InfoContent>
+                    <Header>{movie.title}</Header>
+                    <GenreLabel>{getGenreNames(movie.genre_ids)}</GenreLabel>
+                    <MovieOverview>{movie.overview}</MovieOverview>
+                  </InfoContent>
+                  <ReleaseDateContainer>
+                    <ReleaseDateLabel>{movie.release_date}</ReleaseDateLabel>
+                  </ReleaseDateContainer>
+                </MovieInfo>
+              </MovieCard>
+            ))
+          )}
+        </MovieResults>
+      </SearchSection>
     </DiscoverWrapper>
   );
+  
 }

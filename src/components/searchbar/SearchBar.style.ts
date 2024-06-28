@@ -4,6 +4,7 @@ import { lightBackground, lightGreen } from "../../colors";
 export const SearchBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 export const SearchInputWrapper = styled.div`
@@ -14,6 +15,7 @@ export const SearchInputWrapper = styled.div`
   margin-bottom: 15px;
   padding: 10px;
   background-color: ${lightBackground};
+  
 `;
 
 export const Icon = styled.img`
@@ -28,6 +30,7 @@ export const Input = styled.input`
   flex: 1;
   font-size: 14px;
   color: ${lightGreen};
+
 `;
 
 export const SearchButton = styled.button`

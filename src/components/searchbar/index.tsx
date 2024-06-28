@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import SearchIcon from "../../images/search-icon-yellow.png";
 import CalendarIcon from "../../images/year-icon.png";
 import { SearchBarWrapper, SearchInputWrapper, Icon, Input } from './SearchBar.style';
-
 import { useSearch } from '../utils/SearchContext';
 import useDebounce from '../utils/useDebounce';
 
 const SearchBar: React.FC = () => {
-  const { keyword, year, setKeyword, setYear } = useSearch();
-  const debouncedKeyword = useDebounce(keyword, 2000); 
-  const debouncedYear = useDebounce(year, 2000);
+  const { setKeyword, setYear } = useSearch();
+  const [localKeyword, setLocalKeyword] = useState('');
+  const [localYear, setLocalYear] = useState('');
 
+  const debouncedSetKeyword = useDebounce(setKeyword, 500);
+  const debouncedSetYear = useDebounce(setYear, 500);
 
-  useEffect(() => {
-    setKeyword(debouncedKeyword);
-    setYear(debouncedYear);
-  }, [debouncedKeyword, debouncedYear]);
+  const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalKeyword(e.target.value);
+    debouncedSetKeyword(e.target.value);
+  };
+
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalYear(e.target.value);
+    debouncedSetYear(e.target.value);
+  };
 
   return (
     <SearchBarWrapper>
@@ -25,8 +30,8 @@ const SearchBar: React.FC = () => {
         <Input 
           type="text" 
           placeholder="Keyword" 
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          value={localKeyword}
+          onChange={handleKeywordChange}
         />
       </SearchInputWrapper>
       <SearchInputWrapper>
@@ -34,8 +39,8 @@ const SearchBar: React.FC = () => {
         <Input 
           type="number" 
           placeholder="Year of release" 
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
+          value={localYear}
+          onChange={handleYearChange}
         />
       </SearchInputWrapper>
     </SearchBarWrapper>
