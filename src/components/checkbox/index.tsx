@@ -1,15 +1,31 @@
 import React from "react";
 import styled from 'styled-components';
 
-export default function CheckBox () {
-  // Create a custom checkbox component
-  
+type CheckBoxProps = {
+  label: string;
+  checked: boolean;
+  onChange: () => void;
+};
+
+export default function CheckBox({ label, checked, onChange }: CheckBoxProps) {
   return (
     <CheckboxCont>
+      <Input type="checkbox" checked={checked} onChange={onChange} />
+      <Label>{label}</Label>
     </CheckboxCont>
-  )
+  );
 }
 
 const CheckboxCont = styled.div`
-  position: relative;
-`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+`;
+
+const Input = styled.input`
+  margin-right: 8px;
+`;
+
+const Label = styled.label`
+  cursor: pointer;
+`;
