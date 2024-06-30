@@ -15,6 +15,8 @@ import {
   MovieOverview,
   InfoContent,
   ReleaseDateContainer,
+  Rating,
+  HeaderWrapper,
 } from "./Discover.style";
 import { useSearch } from "../../components/utils/SearchContext";
 
@@ -25,6 +27,7 @@ interface Movie {
   overview: string;
   genre_ids: number[];
   poster_path: string;
+  vote_average: number;
 }
 
 interface State {
@@ -59,7 +62,7 @@ export default function Discover() {
   });
 
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
-  
+
   const [popularPage, setPopularPage] = useState(1);
   const [searchPage, setSearchPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,8 +74,6 @@ export default function Discover() {
       Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZjQwMWQ5ODE4MmQwNWE4MzMwOWQxYTljNDFlNmI1OCIsIm5iZiI6MTcxOTQwOTkwNC4wNTc4MjcsInN1YiI6IjY2N2FlNWY4ZTQ1NDcyMzBlMWEwYjI5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._yuMI9W5WzJrBvA57G1vTIctvNmAQPSVNFD3o7wpMz8`,
     },
   };
-
-
 
   const preloadPopularMovies = async (page: number) => {
     setIsLoading(true);
@@ -124,12 +125,11 @@ export default function Discover() {
       setState((prevState) => ({
         ...prevState,
         genreOptions: response.data.genres,
-        
       }));
     } catch (error) {
       console.error("Error fetching genres:", error);
     }
-  }; 
+  };
 
   useEffect(() => {
     preloadPopularMovies(popularPage);
@@ -179,57 +179,74 @@ export default function Discover() {
       .map((id) => state.genreOptions.find((genre) => genre.id === id)?.name)
       .join(", ");
   };
-  console.log("genres:", state.genreOptions)
+  console.log("genres:", state.genreOptions);
+  console.log("results:", state.results);
+  console.log("popular:", popularMovies);
 
   return (
     <DiscoverWrapper>
       <MobilePageTitle>Discover</MobilePageTitle>
       <SearchSection>
         <MovieFilters>
-          <SearchFilters 
-            genres={state.genreOptions} 
-            ratings={state.ratingOptions}  
+          <SearchFilters
+            genres={state.genreOptions}
+            ratings={state.ratingOptions}
             languages={state.languageOptions}
-            searchMovies={(keyword, year) => searchMovies(keyword, year as string, 1)}
+            searchMovies={(keyword, year) =>
+              searchMovies(keyword, year as string, 1)
+            }
           />
         </MovieFilters>
         <MovieResults>
-          {state.results.length === 0 && !isSearching ? (
-            popularMovies.map((movie) => (
-              <MovieCard key={movie.id}>
-                <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-                <MovieInfo>
-                  <InfoContent>
-                    <Header>{movie.title}</Header>
-                    <GenreLabel>{getGenreNames(movie.genre_ids)}</GenreLabel>
-                    <MovieOverview>{movie.overview}</MovieOverview>
-                  </InfoContent>
-                  <ReleaseDateContainer>
-                    <ReleaseDateLabel>{movie.release_date}</ReleaseDateLabel>
-                  </ReleaseDateContainer>
-                </MovieInfo>
-              </MovieCard>
-            ))
-          ) : (
-            state.results.map((movie) => (
-              <MovieCard key={movie.id}>
-                <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt={movie.title} />
-                <MovieInfo>
-                  <InfoContent>
-                    <Header>{movie.title}</Header>
-                    <GenreLabel>{getGenreNames(movie.genre_ids)}</GenreLabel>
-                    <MovieOverview>{movie.overview}</MovieOverview>
-                  </InfoContent>
-                  <ReleaseDateContainer>
-                    <ReleaseDateLabel>{movie.release_date}</ReleaseDateLabel>
-                  </ReleaseDateContainer>
-                </MovieInfo>
-              </MovieCard>
-            ))
-          )}
+          {state.results.length === 0 && !isSearching
+            ? popularMovies.map((movie) => (
+                <MovieCard key={movie.id}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                  <MovieInfo>
+                    <InfoContent>
+                      <HeaderWrapper>
+                        <Header>{movie.title}</Header>
+                        <Rating>
+                          {movie.vote_average.toString().slice(0, 3)}
+                        </Rating>
+                      </HeaderWrapper>
+                      <GenreLabel>{getGenreNames(movie.genre_ids)}</GenreLabel>
+                      <MovieOverview>{movie.overview}</MovieOverview>
+                    </InfoContent>
+                    <ReleaseDateContainer>
+                      <ReleaseDateLabel>{movie.release_date}</ReleaseDateLabel>
+                    </ReleaseDateContainer>
+                  </MovieInfo>
+                </MovieCard>
+              ))
+            : state.results.map((movie) => (
+                <MovieCard key={movie.id}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                  <MovieInfo>
+                    <InfoContent>
+                      <HeaderWrapper>
+                        <Header>{movie.title}</Header>
+                        <Rating>
+                          {movie.vote_average.toString().slice(0, 3)}
+                        </Rating>
+                      </HeaderWrapper>
+                      <GenreLabel>{getGenreNames(movie.genre_ids)}</GenreLabel>
+                      <MovieOverview>{movie.overview}</MovieOverview>
+                    </InfoContent>
+                    <ReleaseDateContainer>
+                      <ReleaseDateLabel>{movie.release_date}</ReleaseDateLabel>
+                    </ReleaseDateContainer>
+                  </MovieInfo>
+                </MovieCard>
+              ))}
         </MovieResults>
       </SearchSection>
     </DiscoverWrapper>
   );
-  
 }

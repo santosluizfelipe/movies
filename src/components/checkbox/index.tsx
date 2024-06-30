@@ -1,6 +1,8 @@
 import React from "react";
 import styled from 'styled-components';
 
+import { grayFont } from "../../colors";
+
 type CheckBoxProps = {
   label: string;
   checked: boolean;
@@ -19,7 +21,7 @@ export default function CheckBox({ label, checked, onChange }: CheckBoxProps) {
 const CheckboxCont = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 `;
 
 const Input = styled.input`
@@ -28,4 +30,5 @@ const Input = styled.input`
 
 const Label = styled.label`
   cursor: pointer;
+  color: ${grayFont};
 `;

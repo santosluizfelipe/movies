@@ -25,6 +25,7 @@ const SearchBar: React.FC = () => {
 
   return (
     <SearchBarWrapper>
+      <div>
       <SearchInputWrapper>
         <Icon src={SearchIcon} alt="Search Icon" />
         <Input 
@@ -34,6 +35,7 @@ const SearchBar: React.FC = () => {
           onChange={handleKeywordChange}
         />
       </SearchInputWrapper>
+      </div>
       <SearchInputWrapper>
         <Icon src={CalendarIcon} alt="Calendar Icon" />
         <Input 

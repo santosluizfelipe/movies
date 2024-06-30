@@ -1,7 +1,12 @@
 import React from "react";
 import SearchBar from "../searchbar";
 import ExpandableFilters from "../expandablefilters";
-import { CategoryTitle, FiltersWrapper, SearchBarContainer, SearchFiltersCont } from "./SearchFilter.style";
+import {
+  CategoryTitle,
+  FiltersWrapper,
+  SearchBarContainer,
+  SearchFiltersCont,
+} from "./SearchFilter.style";
 
 type Rating = {
   id: number;
@@ -17,7 +22,11 @@ type SearchFiltersProps = {
   genres: { id: number; name: string }[];
   ratings: Rating[];
   languages: Language[];
-  searchMovies: (keyword: string, year: string | undefined, genres: number[]) => void;
+  searchMovies: (
+    keyword: string,
+    year: string | undefined,
+    filters: { genres: number[]; ratings: number[]; languages: string[] }
+  ) => void;
 };
 
 export default function SearchFilters({
@@ -26,9 +35,12 @@ export default function SearchFilters({
   languages,
   searchMovies,
 }: SearchFiltersProps) {
-
-  const handleFilterChange = (selectedGenres: number[]) => {
-    searchMovies('', '', selectedGenres);
+  const handleFilterChange = (selectedFilters: {
+    genres: number[];
+    ratings: number[];
+    languages: string[];
+  }) => {
+    searchMovies("", "", selectedFilters);
   };
 
   return (
@@ -37,10 +49,12 @@ export default function SearchFilters({
         <SearchBar />
       </SearchBarContainer>
       <SearchFiltersCont>
-        <CategoryTitle>Movies</CategoryTitle>
-        <ExpandableFilters 
-          genres={genres} 
-          onFilterChange={handleFilterChange} 
+        <CategoryTitle style={{marginLeft: '1rem', fontSize: '14px'}} >Movie</CategoryTitle>
+        <ExpandableFilters
+          genres={genres}
+          ratings={ratings}
+          languages={languages}
+          onFilterChange={handleFilterChange}
         />
       </SearchFiltersCont>
     </FiltersWrapper>

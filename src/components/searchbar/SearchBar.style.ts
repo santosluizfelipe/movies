@@ -10,19 +10,14 @@ export const SearchBarWrapper = styled.div`
 export const SearchInputWrapper = styled.div`
   display: flex;
   align-items: center;
-  border: 1px solid ${lightGreen};
-  border-radius: 3px;
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: ${lightBackground};
-  
+  border-bottom: 2px solid ${lightGreen};
+  margin-bottom: 0px;
+  margin: 10px;
+  margin-top: 15px;
+  background-color: #fff;
+  padding-bottom: 0.5rem;
 `;
 
-export const Icon = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-`;
 
 export const Input = styled.input`
   border: none;
@@ -30,7 +25,18 @@ export const Input = styled.input`
   flex: 1;
   font-size: 14px;
   color: ${lightGreen};
+  font-weight: 600;
 
+  &::placeholder {
+    color: ${lightGreen};
+    font-weight: 100;
+  }
+`;
+
+export const Icon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
 `;
 
 export const SearchButton = styled.button`

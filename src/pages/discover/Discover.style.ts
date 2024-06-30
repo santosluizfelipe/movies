@@ -68,7 +68,13 @@ export const MovieOverview = styled.p`
   margin: 0;
   font-size: 10px;
   letter-spacing: 1px;
-`
+  overflow: hidden;
+
+  @media (max-width: 923px) {  
+    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    max-height: 50%;
+  }
+`;
 
 export const MovieInfo = styled.div`
   margin-left: 15px;
@@ -86,3 +92,19 @@ export const ReleaseDateContainer = styled.div`
 export const InfoContent = styled.div`
   flex-grow: 1;
 `;
+
+export const Rating = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 20px;
+  background-color: ${lightGreen};
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px;
+`;
+
+export const HeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`

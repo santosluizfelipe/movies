@@ -18,9 +18,8 @@ export const SearchBarContainer = styled.div`
 
 export const SearchFiltersCont = styled.div<{ marginBottom?: boolean }>`
   background-color: white;
-  padding: 20px;
-  transition: all 0.3s ease-in-out;
-  width: 81%;
+  width: 100%;
+  margin-top: 15px;
 `;
 
 export const CategoryTitle = styled.div`
