@@ -46,7 +46,7 @@ export default function SearchFilters({
   return (
     <FiltersWrapper>
       <SearchBarContainer>
-        <SearchBar />
+        <SearchBar isYearRequired={true}/>
       </SearchBarContainer>
       <SearchFiltersCont>
         <CategoryTitle style={{marginLeft: '1rem', fontSize: '14px'}} >Movie</CategoryTitle>

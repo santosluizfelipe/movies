@@ -5,7 +5,12 @@ import { SearchBarWrapper, SearchInputWrapper, Icon, Input } from './SearchBar.s
 import { useSearch } from '../utils/SearchContext';
 import useDebounce from '../utils/useDebounce';
 
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  isYearRequired?: boolean;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ isYearRequired }) => {
+
   const { setKeyword, setYear } = useSearch();
   const [localKeyword, setLocalKeyword] = useState('');
   const [localYear, setLocalYear] = useState('');
@@ -36,7 +41,12 @@ const SearchBar: React.FC = () => {
         />
       </SearchInputWrapper>
       </div>
+      
+        
+      {isYearRequired && (
       <SearchInputWrapper>
+      
+        <>
         <Icon src={CalendarIcon} alt="Calendar Icon" />
         <Input 
           type="number" 
@@ -44,7 +54,10 @@ const SearchBar: React.FC = () => {
           value={localYear}
           onChange={handleYearChange}
         />
+        </>
+      
       </SearchInputWrapper>
+      )}
     </SearchBarWrapper>
   );
 }

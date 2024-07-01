@@ -1,70 +1,149 @@
-import React, { useState } from "react";
-import styled, { css } from 'styled-components';
-import { NavLink as Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink as Link, NavLink } from "react-router-dom";
 
-import * as colors from "../../colors";
-import Arrow from "../../images/arrow-icon.png";
-import SearchWhite from "../../images/search-icon-white.png";
+import SearchBar from "../searchbar";
+import { HiBars3 } from "react-icons/hi2";
+import {
+  HamburgerIcon,
+  HeaderContainer,
+  HeaderText,
+  NavIcon,
+  SideNavBarCont,
+  SideNavHeader,
+  SideNavMainLink,
+} from "./SideNavBar.style";
 
 export default function SideNavBar() {
-  // const [activeSideBar, setActiveSideBar] = useState<boolean>(false)
-  const [activeSideBar, setActiveSideBar] = useState()
+  const [activeSideBar, setActiveSideBar] = useState<boolean>(
+    window.innerWidth >= 768
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 769) {
+        setActiveSideBar(true);
+      } else {
+        setActiveSideBar(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   /* Write the necessary functions to show/hide the side bar on mobile devices */
+  const toggleSidebar = () => {
+    setActiveSideBar(!activeSideBar);
+  };
+
+  useEffect(() => {
+    let startX: number;
+
+    const handleTouchStart: EventListener = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      startX = touchEvent.touches[0].clientX;
+    };
+
+    const handleTouchMove: EventListener = (e: Event) => {
+      const touchEvent = e as TouchEvent;
+      if (!startX) return;
+
+      const currentX = touchEvent.touches[0].clientX;
+      const diffX = startX - currentX;
+
+      if (diffX > 50) {
+        // Swipe from right to left
+        setActiveSideBar(false);
+      }
+    };
+
+    const sideNav = document.querySelector('.visible');
+    if (sideNav) {
+      sideNav.addEventListener('touchstart', handleTouchStart);
+      sideNav.addEventListener('touchmove', handleTouchMove);
+    }
+
+    return () => {
+      if (sideNav) {
+        sideNav.removeEventListener('touchstart', handleTouchStart);
+        sideNav.removeEventListener('touchmove', handleTouchMove);
+      }
+    };
+  }, [activeSideBar]);
 
   return (
-    <SideNavBarCont className={activeSideBar && 'visible'}>
-      {/* Implement a hamburger icon slide in effect for mobile devices */}
-      <SideNavMainLink className="menu_nav_link main_nav_link" to="/" activeClassName="active" exact>
-        Wesley
-      {/* Add types for the props of 'NavIcon' */}
-      <NavIcon ></NavIcon>
-      </SideNavMainLink>
-      <SideNavMainLink className="menu_nav_link" to="/discover" activeClassName="active">
-        Discover
-        <NavIcon ></NavIcon>
-      </SideNavMainLink>
-      <SideNavHeader><HeaderText>Watched</HeaderText></SideNavHeader>
-      <NavLink className="menu_nav_link" to="/watched/movies" activeClassName="active">Movies</NavLink>
-      <NavLink className="menu_nav_link" to="/watched/tv-shows" activeClassName="active">Tv Shows</NavLink>
-      <SideNavHeader><HeaderText>Saved</HeaderText></SideNavHeader>
-      <NavLink className="menu_nav_link" to="/saved/movies" activeClassName="active">Movies</NavLink>
-      <NavLink className="menu_nav_link" to="/saved/tv-shows" activeClassName="active">Tv Shows</NavLink>
-    </SideNavBarCont>
+    <>
+      <HeaderContainer>
+        {!activeSideBar && (
+          <>
+            <HamburgerIcon onClick={toggleSidebar}>
+              <HiBars3 />
+              <div>Discover</div>
+            </HamburgerIcon>
+            <div style={{ marginTop: "4rem", width: "100%" }}>
+              <SearchBar isYearRequired={false} />
+            </div>
+          </>
+        )}
+      </HeaderContainer>
+      {activeSideBar && (
+        <SideNavBarCont className="visible">
+          <SideNavMainLink
+            className="menu_nav_link main_nav_link"
+            to="/"
+            activeClassName="active"
+            exact
+          >
+            Wesley
+          </SideNavMainLink>
+
+          <SideNavMainLink
+            className="menu_nav_link"
+            to="/discover"
+            activeClassName="active"
+          >
+            Discover
+            <NavIcon></NavIcon>
+          </SideNavMainLink>
+          <SideNavHeader>
+            <HeaderText>Watched</HeaderText>
+          </SideNavHeader>
+          <NavLink
+            className="menu_nav_link"
+            to="/watched/movies"
+            activeClassName="active"
+          >
+            Movies
+          </NavLink>
+          <NavLink
+            className="menu_nav_link"
+            to="/watched/tv-shows"
+            activeClassName="active"
+          >
+            Tv Shows
+          </NavLink>
+          <SideNavHeader>
+            <HeaderText>Saved</HeaderText>
+          </SideNavHeader>
+          <NavLink
+            className="menu_nav_link"
+            to="/saved/movies"
+            activeClassName="active"
+          >
+            Movies
+          </NavLink>
+          <NavLink
+            className="menu_nav_link"
+            to="/saved/tv-shows"
+            activeClassName="active"
+          >
+            Tv Shows
+          </NavLink>
+        </SideNavBarCont>
+      )}
+    </>
   );
 }
-
-const SideNavBarCont = styled.div`
-  position: fixed;
-  z-index: 9;
-  width: 280px;
-  height: 100%;
-  background-color: ${colors.sideNavBar};
-`
-
-const SideNavMainLink = styled(Link)`
-  position: relative;
-  display: block;
-  padding: 25px 35px;
-  font-size: 1.6em;
-  font-weight: 700;
-  color: white;
-`
-
-const NavIcon = styled.div`
-  position: absolute;
-  right: 35px;
-  top: 50%;
-`
-
-const SideNavHeader = styled.div`
-
-`
-
-const HeaderText = styled.div`
-
-`
-
-const NavLink = styled(Link)`
-  display: block;
-`
