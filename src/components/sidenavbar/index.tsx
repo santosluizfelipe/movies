@@ -24,12 +24,12 @@ import Arrow from "../../images/arrow-icon.png"
 
 export default function SideNavBar() {
   const [activeSideBar, setActiveSideBar] = useState<boolean>(
-    window.innerWidth >= 768
+    window.innerWidth >= 431
   );
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 431) {
         setActiveSideBar(true);
       } else {
         setActiveSideBar(false);

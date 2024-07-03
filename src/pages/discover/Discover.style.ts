@@ -1,17 +1,22 @@
 import styled from "styled-components";
-import { lightBackground, lightGreen } from "../../colors";
+import { lightBackground, lightGreen, fontColor } from "../../colors";
 
 export const DiscoverWrapper = styled.div<{isSideBarActive?: boolean}>`
   display: flex;
   flex-direction: column;
-  padding: 60px 35px;
+  padding: 10px 35px;
   background-color: ${lightBackground};
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 `;
 
 export const MobilePageTitle = styled.header`
-  margin-bottom: 20px;
+  font-size: 10px;
+  font-weight: 100;
+  margin-bottom: 0px;
+  text-align: left;
+  color: ${fontColor};
+  
 `;
 
 export const SearchSection = styled.div`
@@ -59,10 +64,16 @@ export const MovieCard = styled.div`
     padding: 0px;
   }
 
-  @media (max-width: 430px) {  
+  @media (max-width: 431px) {  
     width: 370px;
     margin-right: 0rem;
   }
+
+  @media (max-width: 375px) {  
+    width: 320px;
+    margin-right: 0rem;
+  }
+
 `;
 
 export const Header = styled.h3`

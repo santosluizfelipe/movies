@@ -66,11 +66,11 @@ export default function Discover() {
   const [searchPage, setSearchPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 769);
+      setIsMobile(window.innerWidth < 768);
     };
 
     window.addEventListener("resize", handleResize);
@@ -191,13 +191,12 @@ export default function Discover() {
       .map((id) => state.genreOptions.find((genre) => genre.id === id)?.name)
       .join(", ");
   };
-  console.log("genres:", state.genreOptions);
-  console.log("results:", state.results);
-  console.log("popular:", popularMovies);
 
   return (
     <DiscoverWrapper>
-      <MobilePageTitle>Discover</MobilePageTitle>
+      {state.results.length > 1 && (
+        <MobilePageTitle>{state.totalCount + " "} movies</MobilePageTitle>
+      )}
       <SearchSection>
         {!isMobile && (
           <MovieFilters>

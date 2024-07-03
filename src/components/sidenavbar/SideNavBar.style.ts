@@ -100,10 +100,10 @@ export const SearchBarContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 4rem;
-  width: 100%;
+
 
   @media (max-width: 430px) {
-    width: 80%;
+    width: 100%;
   }
 
   @media (max-width: 765px) {
