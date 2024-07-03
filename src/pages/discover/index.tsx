@@ -40,7 +40,6 @@ interface State {
 
 export default function Discover() {
   const { keyword, year } = useSearch();
-  // const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
   const [state, setState] = useState<State>({
     results: [],
     totalCount: 0,
@@ -67,6 +66,19 @@ export default function Discover() {
   const [searchPage, setSearchPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 769);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 769);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const options: AxiosRequestConfig = {
     headers: {
@@ -84,7 +96,7 @@ export default function Discover() {
       );
       setPopularMovies((prevMovies) => [
         ...prevMovies,
-        ...response.data.results.slice(0, 3),
+        ...response.data.results.slice(0, 6),
       ]);
       setIsLoading(false);
     } catch (error) {
@@ -104,7 +116,7 @@ export default function Discover() {
         ...prevState,
         results:
           page === 1
-            ? response.data.results.slice(0, 3)
+            ? response.data.results.slice(0, 6)
             : [...prevState.results, ...response.data.results.slice(0, 3)],
         totalCount: response.data.total_results,
       }));
@@ -187,16 +199,18 @@ export default function Discover() {
     <DiscoverWrapper>
       <MobilePageTitle>Discover</MobilePageTitle>
       <SearchSection>
-        <MovieFilters>
-          <SearchFilters
-            genres={state.genreOptions}
-            ratings={state.ratingOptions}
-            languages={state.languageOptions}
-            searchMovies={(keyword, year) =>
-              searchMovies(keyword, year as string, 1)
-            }
-          />
-        </MovieFilters>
+        {!isMobile && (
+          <MovieFilters>
+            <SearchFilters
+              genres={state.genreOptions}
+              ratings={state.ratingOptions}
+              languages={state.languageOptions}
+              searchMovies={(keyword, year) =>
+                searchMovies(keyword, year as string, 1)
+              }
+            />
+          </MovieFilters>
+        )}
         <MovieResults>
           {state.results.length === 0 && !isSearching
             ? popularMovies.map((movie) => (

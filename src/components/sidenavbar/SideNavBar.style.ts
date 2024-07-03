@@ -86,5 +86,21 @@ export const HeaderContainer = styled.div`
   background-color: ${colors.lightBackground};
 `;
 
+export const SearchBarContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4rem;
+  width: 100%;
+
+  @media (max-width: 430px) {
+    width: 80%;
+  }
+
+  @media (max-width: 765px) {
+    width: 100%;
+  }
+`;
 
 

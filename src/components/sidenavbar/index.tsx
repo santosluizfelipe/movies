@@ -11,7 +11,11 @@ import {
   SideNavBarCont,
   SideNavHeader,
   SideNavMainLink,
+  SearchBarContainer,
 } from "./SideNavBar.style";
+
+import Filter from "../../images/filter-icon.png";
+import { Icon } from "../searchbar/SearchBar.style";
 
 export default function SideNavBar() {
   const [activeSideBar, setActiveSideBar] = useState<boolean>(
@@ -20,7 +24,7 @@ export default function SideNavBar() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 769) {
+      if (window.innerWidth >= 768) {
         setActiveSideBar(true);
       } else {
         setActiveSideBar(false);
@@ -35,10 +39,12 @@ export default function SideNavBar() {
   }, []);
 
   /* Write the necessary functions to show/hide the side bar on mobile devices */
+
   const toggleSidebar = () => {
     setActiveSideBar(!activeSideBar);
   };
 
+  // to hide the navbar on mobile devices drag the navbar from right to left like a swipe
   useEffect(() => {
     let startX: number;
 
@@ -55,41 +61,40 @@ export default function SideNavBar() {
       const diffX = startX - currentX;
 
       if (diffX > 50) {
-        // Swipe from right to left
         setActiveSideBar(false);
       }
     };
 
-    const sideNav = document.querySelector('.visible');
+    const sideNav = document.querySelector(".visible");
     if (sideNav) {
-      sideNav.addEventListener('touchstart', handleTouchStart);
-      sideNav.addEventListener('touchmove', handleTouchMove);
+      sideNav.addEventListener("touchstart", handleTouchStart);
+      sideNav.addEventListener("touchmove", handleTouchMove);
     }
 
     return () => {
       if (sideNav) {
-        sideNav.removeEventListener('touchstart', handleTouchStart);
-        sideNav.removeEventListener('touchmove', handleTouchMove);
+        sideNav.removeEventListener("touchstart", handleTouchStart);
+        sideNav.removeEventListener("touchmove", handleTouchMove);
       }
     };
   }, [activeSideBar]);
 
   return (
     <>
-      <HeaderContainer>
-        {!activeSideBar && (
-          <>
+        {!activeSideBar  ? (
+          <HeaderContainer>
             <HamburgerIcon onClick={toggleSidebar}>
               <HiBars3 />
               <div>Discover</div>
             </HamburgerIcon>
-            <div style={{ marginTop: "4rem", width: "100%" }}>
+            <SearchBarContainer>
               <SearchBar isYearRequired={false} />
-            </div>
-          </>
-        )}
-      </HeaderContainer>
-      {activeSideBar && (
+              <Icon src={Filter} alt="Filter Icon" />
+            </SearchBarContainer>
+            </HeaderContainer>
+        ) : null}
+      
+      {activeSideBar ? (
         <SideNavBarCont className="visible">
           <SideNavMainLink
             className="menu_nav_link main_nav_link"
@@ -143,7 +148,7 @@ export default function SideNavBar() {
             Tv Shows
           </NavLink>
         </SideNavBarCont>
-      )}
+      ) : null}
     </>
   );
 }

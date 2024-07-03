@@ -28,7 +28,15 @@ const App: React.FC = () => {
 export default App;
 
 const ContentWrapper = styled.main`
-  padding-left: 280px;
+  
+
+  @media (max-width: 430px) {
+    padding-left: 280px;
+  }
+
+  @media (min-width: 808px) {
+    padding-left: 280px;
+  }
 `
 
 const PageContainer = styled.main`
