@@ -7,9 +7,10 @@ import useDebounce from '../utils/useDebounce';
 
 interface SearchBarProps {
   isYearRequired?: boolean;
+  inputColor?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ isYearRequired }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ isYearRequired, inputColor }) => {
 
   const { setKeyword, setYear } = useSearch();
   const [localKeyword, setLocalKeyword] = useState('');
@@ -31,7 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ isYearRequired }) => {
   return (
     <SearchBarWrapper>
       <div>
-      <SearchInputWrapper>
+      <SearchInputWrapper bgColor={inputColor}>
         <Icon src={SearchIcon} alt="Search Icon" />
         <Input 
           type="text" 

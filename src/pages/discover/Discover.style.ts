@@ -8,13 +8,6 @@ export const DiscoverWrapper = styled.div<{isSideBarActive?: boolean}>`
   background-color: ${lightBackground};
   justify-content: center;
   align-items: center;
-
-  @media (max-width: 768px) {
-    /* padding: 60px 35px 0 280px; */
-    /* padding-left: 280x; */
-
-
-  }
 `;
 
 export const MobilePageTitle = styled.header`

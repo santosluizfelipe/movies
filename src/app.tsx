@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 import SideNavBar from "./components/sidenavbar";
 import Discover from "./pages/discover";
 import { SearchProvider } from "./components/utils/SearchContext";
 
-import './css/app.css'; 
+import "./css/app.css";
 
 const App: React.FC = () => {
   return (
@@ -23,22 +23,20 @@ const App: React.FC = () => {
       </Router>
     </SearchProvider>
   );
-}
+};
 
 export default App;
 
 const ContentWrapper = styled.main`
-  
-
   @media (max-width: 430px) {
     padding-left: 280px;
   }
 
-  @media (min-width: 808px) {
+  @media (min-width: 768px) {
     padding-left: 280px;
   }
-`
+`;
 
 const PageContainer = styled.main`
   overflow-x: hidden;
-`
+`;

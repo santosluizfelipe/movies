@@ -1,20 +1,24 @@
 import styled from "styled-components";
 import { lightBackground, lightGreen } from "../../colors";
 
+interface SearchInputWrapperProps {
+  bgColor?: string;
+}
+
 export const SearchBarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
 
-export const SearchInputWrapper = styled.div`
+export const SearchInputWrapper = styled.div<SearchInputWrapperProps>`
   display: flex;
   align-items: center;
   border-bottom: 2px solid ${lightGreen};
   margin-bottom: 0px;
   margin: 10px;
   margin-top: 15px;
-  background-color: #fff;
+  background-color: ${props => props.bgColor || '#fff'};
   padding-bottom: 0.5rem;
 `;
 

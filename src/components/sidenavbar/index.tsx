@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { NavLink as Link, NavLink } from "react-router-dom";
 
 import SearchBar from "../searchbar";
 import { HiBars3 } from "react-icons/hi2";
@@ -12,10 +11,16 @@ import {
   SideNavHeader,
   SideNavMainLink,
   SearchBarContainer,
+  NavLinkContainer,
+  StyledNavLink,
 } from "./SideNavBar.style";
+
+import { lightBackground } from "../../colors";
 
 import Filter from "../../images/filter-icon.png";
 import { Icon } from "../searchbar/SearchBar.style";
+import Search from "../../images/search-icon-white.png";
+import Arrow from "../../images/arrow-icon.png"
 
 export default function SideNavBar() {
   const [activeSideBar, setActiveSideBar] = useState<boolean>(
@@ -81,19 +86,19 @@ export default function SideNavBar() {
 
   return (
     <>
-        {!activeSideBar  ? (
-          <HeaderContainer>
-            <HamburgerIcon onClick={toggleSidebar}>
-              <HiBars3 />
-              <div>Discover</div>
-            </HamburgerIcon>
-            <SearchBarContainer>
-              <SearchBar isYearRequired={false} />
-              <Icon src={Filter} alt="Filter Icon" />
-            </SearchBarContainer>
-            </HeaderContainer>
-        ) : null}
-      
+      {!activeSideBar ? (
+        <HeaderContainer>
+          <HamburgerIcon onClick={toggleSidebar}>
+            <HiBars3 />
+            <div>Discover</div>
+          </HamburgerIcon>
+          <SearchBarContainer>
+            <SearchBar isYearRequired={false} inputColor={lightBackground} />
+            <Icon src={Filter} alt="Filter Icon" />
+          </SearchBarContainer>
+        </HeaderContainer>
+      ) : null}
+
       {activeSideBar ? (
         <SideNavBarCont className="visible">
           <SideNavMainLink
@@ -101,52 +106,66 @@ export default function SideNavBar() {
             to="/"
             activeClassName="active"
             exact
+            style={{ fontWeight: '600' }}
           >
             Wesley
+            <NavIcon>
+              <Icon src={Arrow} alt="search Icon" />
+            </NavIcon>
           </SideNavMainLink>
 
+      
           <SideNavMainLink
             className="menu_nav_link"
             to="/discover"
             activeClassName="active"
+            
           >
             Discover
-            <NavIcon></NavIcon>
+            <NavIcon>
+              <Icon src={Search} alt="search Icon" />
+            </NavIcon>
           </SideNavMainLink>
+
           <SideNavHeader>
             <HeaderText>Watched</HeaderText>
           </SideNavHeader>
-          <NavLink
-            className="menu_nav_link"
-            to="/watched/movies"
-            activeClassName="active"
-          >
-            Movies
-          </NavLink>
-          <NavLink
-            className="menu_nav_link"
-            to="/watched/tv-shows"
-            activeClassName="active"
-          >
-            Tv Shows
-          </NavLink>
+          <NavLinkContainer>
+            <StyledNavLink
+              className="menu_nav_link"
+              to="/watched/movies"
+              activeClassName="active"
+            >
+              Movies
+            </StyledNavLink>
+
+            <StyledNavLink
+              className="menu_nav_link"
+              to="/watched/tv-shows"
+              activeClassName="active"
+            >
+              Tv Shows
+            </StyledNavLink>
+          </NavLinkContainer>
           <SideNavHeader>
             <HeaderText>Saved</HeaderText>
           </SideNavHeader>
-          <NavLink
-            className="menu_nav_link"
-            to="/saved/movies"
-            activeClassName="active"
-          >
-            Movies
-          </NavLink>
-          <NavLink
-            className="menu_nav_link"
-            to="/saved/tv-shows"
-            activeClassName="active"
-          >
-            Tv Shows
-          </NavLink>
+          <NavLinkContainer>
+            <StyledNavLink
+              className="menu_nav_link"
+              to="/saved/movies"
+              activeClassName="active"
+            >
+              Movies
+            </StyledNavLink>
+            <StyledNavLink
+              className="menu_nav_link"
+              to="/saved/tv-shows"
+              activeClassName="active"
+            >
+              Tv Shows
+            </StyledNavLink>
+          </NavLinkContainer>
         </SideNavBarCont>
       ) : null}
     </>

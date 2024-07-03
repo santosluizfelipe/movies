@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { NavLink as Link } from "react-router-dom";
+
 import * as colors from "../../colors";
 
 
@@ -27,24 +28,34 @@ export const SideNavBarCont = styled.div`
 export const SideNavMainLink = styled(Link)`
   position: relative;
   display: block;
-  padding: 25px 35px;
   font-size: 1.6em;
-  font-weight: 700;
+  font-weight: 300;
   color: white;
-  border-bottom: 1px solid ${colors.grayFont};
+  padding: 20px 0 20px 20px;
+
+
+  &:hover {
+    background-color: ${colors.lightGreen};
+  }
 `
 
 export const NavIcon = styled.div`
+  display: flex;
   position: absolute;
   right: 35px;
-  top: 50%;
+  top: 40%
 `
 
 export const SideNavHeader = styled.div`
-
+  padding: 20px 20px 20px 0;
+  color: white;
+  border-bottom: 1px solid ${colors.grayFont};
+  margin-left: 20px;
 `
 
 export const HeaderText = styled.div`
+  font-size: 24px;
+  font-weight: 300;
 
 `
 
@@ -80,10 +91,7 @@ export  const ArrowIcon = styled.img`
 
 export const HeaderContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  background-color: ${colors.lightBackground};
+  align-items: flex-start;
 `;
 
 export const SearchBarContainer = styled.div`
@@ -102,5 +110,30 @@ export const SearchBarContainer = styled.div`
     width: 100%;
   }
 `;
+
+
+export const NavLinkContainer = styled.div`
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+
+
+
+export const StyledNavLink = styled(NavLink)`
+  color: ${colors.fontColor};
+  text-decoration: none;
+  font-weight: 100;
+
+  &.active {
+    color: ${colors.fontColor}; 
+  }
+
+
+`;
+
 
 
