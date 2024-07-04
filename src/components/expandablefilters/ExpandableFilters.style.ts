@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { fontColor } from "../../colors";
 
 
 export const FiltersWrapper = styled.div`

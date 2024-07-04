@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import Checkbox from "../checkbox";
 
 import { MdAdd, MdRemove } from "react-icons/md";
@@ -98,8 +97,7 @@ export default function ExpandableFilters({
             <Checkbox
               label={genre.name}
               checked={selectedGenres.includes(genre.id)}
-              onChange={() => handleCheckboxChange(genre.id, "genres")}
-            />
+              onChange={() => handleCheckboxChange(genre.id, "genres")}            />
           </CheckboxContainer>
         ))}
 

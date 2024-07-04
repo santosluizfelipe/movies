@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios, { AxiosRequestConfig } from "axios";
+import  { AxiosRequestConfig } from "axios";
 import SearchFilters from "../../components/searchfilter";
 import {
   DiscoverWrapper,
@@ -84,7 +84,7 @@ export default function Discover() {
   const options: AxiosRequestConfig = {
     headers: {
       accept: "application/json",
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZjQwMWQ5ODE4MmQwNWE4MzMwOWQxYTljNDFlNmI1OCIsIm5iZiI6MTcxOTQwOTkwNC4wNTc4MjcsInN1YiI6IjY2N2FlNWY4ZTQ1NDcyMzBlMWEwYjI5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._yuMI9W5WzJrBvA57G1vTIctvNmAQPSVNFD3o7wpMz8`,
+      Authorization: `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
     },
   };
 

@@ -1,4 +1,5 @@
-import styled, { css } from "styled-components";
+import styled  from "styled-components";
+
 
 export const FiltersWrapper = styled.div`
   position: relative;
@@ -21,6 +22,8 @@ export const SearchFiltersCont = styled.div<{ marginBottom?: boolean }>`
   width: 100%;
   margin-top: 15px;
 `;
+
+
 
 export const CategoryTitle = styled.div`
   font-weight: bold;

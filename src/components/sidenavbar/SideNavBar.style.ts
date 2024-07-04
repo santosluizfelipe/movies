@@ -21,7 +21,6 @@ export const SideNavBarCont = styled.div`
 
   @media (min-width: 769px) {
     transform: translateX(0);
-    height: 100%;
   }
 `;
 
@@ -43,7 +42,8 @@ export const NavIcon = styled.div`
   display: flex;
   position: absolute;
   right: 35px;
-  top: 40%
+  top: 40%;
+
 `
 
 export const SideNavHeader = styled.div`
@@ -131,8 +131,31 @@ export const StyledNavLink = styled(NavLink)`
   &.active {
     color: ${colors.fontColor}; 
   }
+`;
 
 
+export const SearchFiltersContMobile = styled.div<{ visible: boolean }>`
+  position: fixed;
+  top: 1rem;
+  right: 0;
+  height: 100%;
+  height: 100%;
+  width: ${(props) => (props.visible ? "250px" : "0px")};
+  background-color: ${colors.lightBackground};
+  z-index: 20;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+
+  &.visible {
+    transform: translateX(0);
+  }
+
+  @media (min-width: 769px) {
+    transform: translateX(0);
+  }
 `;
 
 

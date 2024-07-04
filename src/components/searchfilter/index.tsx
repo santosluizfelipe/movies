@@ -43,6 +43,8 @@ export default function SearchFilters({
     searchMovies("", "", selectedFilters);
   };
 
+  console.log("++++",genres)
+
   return (
     <FiltersWrapper>
       <SearchBarContainer>

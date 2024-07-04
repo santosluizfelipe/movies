@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import axios, { AxiosRequestConfig } from "axios";
+import  { AxiosRequestConfig } from "axios";
+import { fetchGenres } from "../../fetcher";
 
-interface Genre {
+export interface Genre {
   id: number;
   name: string;
 }
@@ -11,7 +12,7 @@ interface SearchContextProps {
   year: string;
   setKeyword: (keyword: string) => void;
   setYear: (year: string) => void;
-  genres: Genre[];
+  genres: { id: number; name: string }[];
   setGenres: (genres: Genre[]) => void;
   minVote: number | null;
   setMinVote: (vote: number | null) => void;
@@ -21,9 +22,7 @@ interface SearchContextProps {
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
-export const SearchProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [keyword, setKeyword] = useState("");
   const [year, setYear] = useState("");
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -34,23 +33,11 @@ export const SearchProvider: React.FC<{ children: ReactNode }> = ({
     const options: AxiosRequestConfig = {
       headers: {
         accept: "application/json",
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZjQwMWQ5ODE4MmQwNWE4MzMwOWQxYTljNDFlNmI1OCIsIm5iZiI6MTcxOTQwOTkwNC4wNTc4MjcsInN1YiI6IjY2N2FlNWY4ZTQ1NDcyMzBlMWEwYjI5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._yuMI9W5WzJrBvA57G1vTIctvNmAQPSVNFD3o7wpMz8`,
+        Authorization: `Bearer YOUR_API_KEY`,
       },
     };
 
-    const fetchGenres = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.themoviedb.org/3/genre/movie/list?language=en-US",
-          options
-        );
-        setGenres(response.data.genres);
-      } catch (error) {
-        console.error("Error fetching genres:", error);
-      }
-    };
-
-    fetchGenres();
+    fetchGenres(setGenres, options);
   }, []);
 
   return (

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { lightBackground, lightGreen } from "../../colors";
+import { lightGreen } from "../../colors";
 
 interface SearchInputWrapperProps {
   bgColor?: string;
