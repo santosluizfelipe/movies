@@ -61,7 +61,7 @@ export const MovieCard = styled.div`
     align-items: flex-start;
     text-align: left;
     width: 100%;
-    padding: 0px;
+    padding: 20px;
   }
 
   @media (max-width: 431px) {  
