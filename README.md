@@ -45,3 +45,78 @@ Please create a git repository of your solution and send the link to your contac
 
 [mockup]: <https://cord-coding-challenges.s3-eu-west-1.amazonaws.com/frontend-test-mockups.zip>
 [theMovieDB]: <https://www.themoviedb.org/documentation/api>
+
+
+### Introduction
+This project is a React application built with TypeScript to provide type safety and better development experience. The project leverages modern React features such as hooks, including useState, useEffect, and useContext. Styling is managed with styled-components for a clean and modular approach to CSS.
+
+
+### Features
+React with TypeScript: Benefit from type safety and a better development experience.
+React Hooks: Use modern React hooks like useState, useEffect, and useContext for state and side-effect management.
+Styled Components: Modular and scoped styling with styled-components.
+Responsive Design: Ensure a great user experience across different devices and screen sizes.
+
+### Technologies Used
+- React (version 16.8.6)
+- TypeScript
+- Styled Components
+- React Hooks
+
+
+## Installation
+1. Clone this repo
+
+2. install dependencies
+```
+npm install
+# or
+yarn install
+
+npm start
+# or
+yarn start
+```
+
+- This will start the application on http://localhost:3000
+
+
+### Usage
+
+## components
+
+- SideNavBar: Navigation sidebar component that includes links and filter options.
+- SearchBar: Component for the search input field.
+- ExpandableFilters: Component for expandable filter options.
+
+## State Management
+- useState: Used for managing component state.
+- useEffect: Used for handling side effects such as data fetching.
+- useContext: Used for sharing state across components with SearchContext.
+
+## Styling
+Styled Components: CSS-in-JS approach for defining component styles.
+```import styled from 'styled-components';
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fff;
+`;
+
+```
+
+
+### API integration
+The project includes integration with external APIs for fetching genres and other data. The API calls are managed in the fetcher.ts file using axios.
+
+### Environment Variables
+Store sensitive information such as API keys in a .env file at the root of your project. Example:
+
+.enf file:
+```
+REACT_APP_API_KEY=your_api_key
+REACT_APP_ACCESS_TOKEN=your_access_token
+```
