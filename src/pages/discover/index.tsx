@@ -19,8 +19,9 @@ import {
   HeaderWrapper,
 } from "./Discover.style";
 import { useSearch } from "../../components/utils/SearchContext";
+import { fetchGenres, preloadPopularMovies, searchMovies } from "../../fetcher";
 
-interface Movie {
+export interface Movie {
   id: number;
   title: string;
   release_date: string;
@@ -87,70 +88,16 @@ export default function Discover() {
     },
   };
 
-  const preloadPopularMovies = async (page: number) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/popular?language=en-US&page=${page}`,
-        options
-      );
-      setPopularMovies((prevMovies) => [
-        ...prevMovies,
-        ...response.data.results.slice(0, 6),
-      ]);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  };
-
-  const searchMovies = async (keyword: string, year: string, page: number) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?query=${keyword}&year=${year}&language=en-US&page=${page}`,
-        options
-      );
-      setState((prevState) => ({
-        ...prevState,
-        results:
-          page === 1
-            ? response.data.results.slice(0, 6)
-            : [...prevState.results, ...response.data.results.slice(0, 3)],
-        totalCount: response.data.total_results,
-      }));
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
-  };
-
-  const fetchGenres = async () => {
-    try {
-      const response = await axios.get(
-        "https://api.themoviedb.org/3/genre/movie/list?language=en-US",
-        options
-      );
-
-      setState((prevState) => ({
-        ...prevState,
-        genreOptions: response.data.genres,
-      }));
-    } catch (error) {
-      console.error("Error fetching genres:", error);
-    }
-  };
 
   useEffect(() => {
-    preloadPopularMovies(popularPage);
-    fetchGenres();
+    preloadPopularMovies(popularPage, setIsLoading, setPopularMovies, options);
+    fetchGenres(setState, options);
   }, [popularPage]);
+
 
   useEffect(() => {
     if (isSearching) {
-      searchMovies(keyword, year, searchPage);
+      searchMovies(keyword, year, searchPage, setIsLoading, setState, options);
     }
   }, [searchPage, isSearching, keyword, year]);
 
@@ -176,7 +123,7 @@ export default function Discover() {
     if (keyword || year) {
       setIsSearching(true);
       setSearchPage(1);
-      searchMovies(keyword, year, 1);
+      searchMovies(keyword, year, 1, setIsLoading, setState, options);
     } else {
       setIsSearching(false);
       setState((prevState) => ({
@@ -205,7 +152,7 @@ export default function Discover() {
               ratings={state.ratingOptions}
               languages={state.languageOptions}
               searchMovies={(keyword, year) =>
-                searchMovies(keyword, year as string, 1)
+                searchMovies(keyword, year as string, 1, setIsLoading, setState, options)
               }
             />
           </MovieFilters>
