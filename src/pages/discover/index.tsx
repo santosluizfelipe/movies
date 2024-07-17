@@ -84,7 +84,7 @@ export default function Discover() {
   const options: AxiosRequestConfig = {
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZjQwMWQ5ODE4MmQwNWE4MzMwOWQxYTljNDFlNmI1OCIsIm5iZiI6MTcyMTI0MTI2NS43NzgwMDEsInN1YiI6IjY2N2FlNWY4ZTQ1NDcyMzBlMWEwYjI5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.EFJIJjdFrwwJGgT4JE6hi71mRl1arZTa6wJiRTKnvbo`,
     },
   };
 
