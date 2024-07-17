@@ -12,12 +12,16 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ isYearRequired, inputColor }) => {
 
-  const { setKeyword, setYear } = useSearch();
+  const { setKeyword, setYear, keyword, year } = useSearch();
   const [localKeyword, setLocalKeyword] = useState('');
   const [localYear, setLocalYear] = useState('');
 
   const debouncedSetKeyword = useDebounce(setKeyword, 500);
   const debouncedSetYear = useDebounce(setYear, 500);
+  
+  // const debouncedSetKeyword = useDebounce(keyword as any, 500);
+  // const debouncedSetYear = useDebounce(year as any, 500);
+
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalKeyword(e.target.value);

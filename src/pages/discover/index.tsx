@@ -99,7 +99,7 @@ export default function Discover() {
     if (isSearching) {
       searchMovies(keyword, year, searchPage, setIsLoading, setState, options);
     }
-  }, [searchPage, isSearching, keyword, year]);
+  }, [searchPage]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -120,6 +120,11 @@ export default function Discover() {
   }, [isLoading, isSearching]);
 
   useEffect(() => {
+
+    if (isSearching) {
+      searchMovies(keyword, year, searchPage, setIsLoading, setState, options);
+    }
+
     if (keyword || year) {
       setIsSearching(true);
       setSearchPage(1);

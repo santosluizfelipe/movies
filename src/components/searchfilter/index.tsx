@@ -43,7 +43,6 @@ export default function SearchFilters({
     searchMovies("", "", selectedFilters);
   };
 
-  console.log("++++",genres)
 
   return (
     <FiltersWrapper>
@@ -51,7 +50,7 @@ export default function SearchFilters({
         <SearchBar isYearRequired={true}/>
       </SearchBarContainer>
       <SearchFiltersCont>
-        <CategoryTitle style={{marginLeft: '1rem', fontSize: '14px'}} >Movie</CategoryTitle>
+        <CategoryTitle style={{marginLeft: '1rem', fontSize: '14px'}}>Movie</CategoryTitle>
         <ExpandableFilters
           genres={genres}
           ratings={ratings}

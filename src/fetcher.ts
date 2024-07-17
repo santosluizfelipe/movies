@@ -41,6 +41,7 @@ export const searchMovies = async (
 ) => {
   setIsLoading(true);
   try {
+    console.log("about to dispatch get request 1")
     const response = await axios.get(
       `https://api.themoviedb.org/3/search/movie?query=${keyword}&year=${year}&language=en-US&page=${page}`,
       options
